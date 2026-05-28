@@ -9,6 +9,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t)})()</script>
+    <script>
+      // Restore path encoded by 404.html redirect (SPA routing on GitHub Pages)
+      (function(){
+        var r = new URLSearchParams(window.location.search).get('r')
+        if (r) window.history.replaceState(null, '', '/doccraft' + decodeURIComponent(r))
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

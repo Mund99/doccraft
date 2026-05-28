@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>doccraft</title>
+  <script>
+    // SPA redirect for GitHub Pages
+    // Encodes the current path into a query param and redirects to index.html
+    // so React Router can handle the route on the client side.
+    var l = window.location
+    var base = '/doccraft'
+    var path = l.pathname.slice(base.length) || '/'
+    l.replace(
+      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+      base + '/?r=' + encodeURIComponent(path) +
+      (l.search ? '&' + l.search.slice(1) : '') +
+      l.hash
+    )
+  </script>
+</head>
+<body></body>
+</html>
