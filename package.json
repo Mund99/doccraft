@@ -1,8 +1,26 @@
 {
   "name": "doccraft",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Clean React + Vite documentation site framework with light/dark theme, sidebar, on-page TOC, and reusable doc components",
   "type": "module",
+  "homepage": "https://github.com/Mund99/doccraft",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mund99/doccraft.git"
+  },
+  "keywords": [
+    "documentation",
+    "docs",
+    "react",
+    "vite",
+    "typescript",
+    "template",
+    "docs-framework",
+    "dark-mode",
+    "sidebar",
+    "table-of-contents"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

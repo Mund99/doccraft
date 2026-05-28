@@ -1,6 +1,7 @@
 // ─────────────────────────────────────────────────────────
 //  nav.ts  ←  EDIT THIS FILE FOR EACH NEW PROJECT
 //  Define your sidebar navigation here.
+//  Every path must have a matching <Route> in App.tsx.
 // ─────────────────────────────────────────────────────────
 
 export interface NavItem {
@@ -12,25 +13,19 @@ export interface NavItem {
 export const NAV: NavItem[] = [
   { label: 'Home', path: '/' },
   {
-    label: 'Getting Started',
-    children: [
-      { label: 'Introduction', path: '/docs/introduction' },
-      { label: 'Installation', path: '/docs/installation' },
-      { label: 'Quick Start', path: '/docs/quick-start' },
-    ],
-  },
-  {
-    label: 'Guides',
-    children: [
-      { label: 'Overview', path: '/guides/overview' },
-    ],
-  },
-  {
-    label: 'Components',
+    label: 'Framework',
     children: [
       { label: 'Component Showcase', path: '/docs/showcase' },
     ],
   },
+  // ── Add your sections below ──────────────────────────
+  // {
+  //   label: 'Getting Started',
+  //   children: [
+  //     { label: 'Introduction', path: '/docs/introduction' },
+  //     { label: 'Installation',  path: '/docs/installation' },
+  //   ],
+  // },
 ]
 
 /** Flat ordered list used for Prev / Next navigation */
