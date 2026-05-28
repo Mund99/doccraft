@@ -3,6 +3,36 @@ import { useEffect, useRef, useState } from 'react'
 interface Props { chart: string }
 
 let _id = 0
+let initialized = false
+
+const THEME_VARS = {
+  primaryColor:        '#dbeafe',
+  primaryTextColor:    '#1e3a8a',
+  primaryBorderColor:  '#93c5fd',
+  lineColor:           '#3b5bdb',
+  secondaryColor:      '#eff6ff',
+  tertiaryColor:       '#f0f9ff',
+  edgeLabelBackground: '#eef2ff',
+  fontFamily:          "'Outfit', sans-serif",
+  fontSize:            '13px',
+  clusterBkg:          '#f8faff',
+  clusterBorder:       '#c7d2fe',
+  titleColor:          '#1e3a8a',
+}
+
+async function getMermaid() {
+  const { default: m } = await import('mermaid')
+  if (!initialized) {
+    m.initialize({
+      startOnLoad: false,
+      theme: 'base',
+      themeVariables: THEME_VARS,
+      flowchart: { curve: 'basis', htmlLabels: false },
+    })
+    initialized = true
+  }
+  return m
+}
 
 export default function Diagram({ chart }: Props) {
   const ref = useRef<HTMLDivElement>(null)
@@ -10,30 +40,26 @@ export default function Diagram({ chart }: Props) {
   const [err, setErr] = useState<string | null>(null)
 
   useEffect(() => {
-    let live = true
+    let cancelled = false
+
     ;(async () => {
       try {
-        const m = (await import('mermaid')).default
-        m.initialize({
-          startOnLoad: false,
-          theme: 'base',
-          themeVariables: {
-            primaryColor: '#dbeafe', primaryTextColor: '#1e3a8a',
-            primaryBorderColor: '#93c5fd', lineColor: '#3b5bdb',
-            secondaryColor: '#eff6ff', tertiaryColor: '#f0f9ff',
-            edgeLabelBackground: '#eef2ff',
-            fontFamily: "'Outfit', sans-serif", fontSize: '13px',
-            clusterBkg: '#f8faff', clusterBorder: '#c7d2fe', titleColor: '#1e3a8a',
-          },
-          flowchart: { curve: 'basis', htmlLabels: false },
-        })
+        const m = await getMermaid()
+        if (cancelled) return
+
+        // Remove any stale Mermaid helper element left from a previous render
+        document.getElementById(id.current)?.remove()
+        if (ref.current) ref.current.innerHTML = ''
+
         const { svg } = await m.render(id.current, chart.trim())
-        if (live && ref.current) ref.current.innerHTML = svg
+
+        if (!cancelled && ref.current) ref.current.innerHTML = svg
       } catch (e) {
-        if (live) setErr(String(e))
+        if (!cancelled) setErr(String(e))
       }
     })()
-    return () => { live = false }
+
+    return () => { cancelled = true }
   }, [chart])
 
   if (err) return (
