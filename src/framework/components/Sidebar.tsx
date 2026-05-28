@@ -1,11 +1,9 @@
 import { useState } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { NAV, type NavItem } from '../../nav'
 
 function Section({ item }: { item: NavItem }) {
-  const { pathname } = useLocation()
-  const childActive = item.children?.some(c => c.path === pathname)
-  const [open, setOpen] = useState(childActive ?? true)
+  const [open, setOpen] = useState(true)
 
   return (
     <div className="nav-section">

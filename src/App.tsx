@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useContext } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, Link } from 'react-router-dom'
 import { Sidebar, ThemeContext } from './framework'
 import { siteConfig } from './site.config'
 import './framework/styles/globals.css'
@@ -61,10 +61,10 @@ function Header({ onMenu }: { onMenu: () => void }) {
     <header className="header">
       <button onClick={onMenu} className="mobile-btn" aria-label="Menu">☰</button>
 
-      <a href="/" className="header-logo">
+      <Link to="/" className="header-logo">
         <div className="header-logo-icon">{siteConfig.logo}</div>
         <span className="header-title">{siteConfig.title}</span>
-      </a>
+      </Link>
 
       {siteConfig.version && <span className="header-version">{siteConfig.version}</span>}
 
