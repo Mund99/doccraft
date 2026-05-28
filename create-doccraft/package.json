@@ -1,0 +1,33 @@
+{
+  "name": "create-doccraft",
+  "version": "1.0.0",
+  "description": "Scaffold a new doccraft documentation site — npx create-doccraft <project-name>",
+  "type": "module",
+  "bin": {
+    "create-doccraft": "bin/create.js"
+  },
+  "files": [
+    "bin"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "doccraft",
+    "documentation",
+    "docs",
+    "react",
+    "vite",
+    "create",
+    "scaffold",
+    "template"
+  ],
+  "author": "Mund99",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mund99/doccraft.git",
+    "directory": "create-doccraft"
+  },
+  "homepage": "https://github.com/Mund99/doccraft"
+}

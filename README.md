@@ -6,11 +6,23 @@ Light/warm theme, dark mode, responsive sidebar, on-page TOC, and a complete set
 
 ---
 
-## Use this template
+## Quick start
+
+**Option 1 — npx (recommended)**
+
+```bash
+npx create-doccraft my-project-docs
+cd my-project-docs
+npm run dev
+```
+
+**Option 2 — GitHub template**
 
 Click **"Use this template"** on GitHub to create a new repo, then:
 
 ```bash
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+cd YOUR_REPO
 npm install
 npm run dev
 ```
