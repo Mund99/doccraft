@@ -13,6 +13,13 @@ export interface NavItem {
 export const NAV: NavItem[] = [
   { label: 'Home', path: '/' },
   {
+    label: 'Getting Started',
+    children: [
+      { label: 'How to Use',          path: '/docs/how-to-use' },
+      { label: 'AI Prompt Templates', path: '/docs/ai-prompts' },
+    ],
+  },
+  {
     label: 'Framework',
     children: [
       { label: 'Component Showcase', path: '/docs/showcase' },
@@ -20,10 +27,10 @@ export const NAV: NavItem[] = [
   },
   // ── Add your sections below ──────────────────────────
   // {
-  //   label: 'Getting Started',
+  //   label: 'Your Section',
   //   children: [
   //     { label: 'Introduction', path: '/docs/introduction' },
-  //     { label: 'Installation',  path: '/docs/installation' },
+  //     { label: 'Installation', path: '/docs/installation' },
   //   ],
   // },
 ]

@@ -1,19 +1,16 @@
-import { useState, useRef, useEffect, createContext, useContext } from 'react'
+import { useState, useRef, useEffect, useContext } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { Sidebar } from './framework'
+import { Sidebar, ThemeContext } from './framework'
 import { siteConfig } from './site.config'
 import './framework/styles/globals.css'
 
 // ── Pages — add your imports here ────────────────────────
 import HomePage from './pages/HomePage'
+import HowToUse from './pages/docs/HowToUse'
+import AiPrompts from './pages/docs/AiPrompts'
 import Showcase from './pages/docs/Showcase'
 // import YourPage from './pages/YourPage'
 // ─────────────────────────────────────────────────────────
-
-export const ThemeContext = createContext<{ theme: 'light' | 'dark'; toggle: () => void }>({
-  theme: 'light',
-  toggle: () => {},
-})
 
 function NotFound() {
   const { pathname } = useLocation()
@@ -129,8 +126,10 @@ export default function App() {
           {/* ── Add your routes here ───────────────────────── */}
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/docs/how-to-use" element={<HowToUse />} />
+            <Route path="/docs/ai-prompts" element={<AiPrompts />} />
             <Route path="/docs/showcase" element={<Showcase />} />
-            {/* <Route path="/docs/introduction" element={<Introduction />} /> */}
+            {/* <Route path="/docs/your-page" element={<YourPage />} /> */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
