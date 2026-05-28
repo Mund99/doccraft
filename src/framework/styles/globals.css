@@ -407,7 +407,7 @@ body {
 .page-nav-btn--next .page-nav-hint,
 .page-nav-btn--next .page-nav-label { text-align: right; }
 .page-nav-arrow { font-size: 1rem; flex-shrink: 0; color: var(--accent-light); }
-.page-nav-text { display: flex; flex-direction: column; gap: 0.08rem; min-width: 0; }
+.page-nav-text { display: flex; flex-direction: column; gap: 0.08rem; min-width: 0; flex: 1; }
 .page-nav-hint { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); font-family: var(--font-head); }
 .page-nav-label { font-size: 0.85rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
