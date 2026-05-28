@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "description": "Clean React + Vite documentation site framework with light/dark theme, sidebar, on-page TOC, and reusable doc components",
   "type": "module",
+  "engines": {
+    "node": ">=20.19"
+  },
   "homepage": "https://github.com/Mund99/doccraft",
   "repository": {
     "type": "git",

@@ -1,9 +1,5 @@
 import { Link } from 'react-router-dom'
-import DocLayout from '../framework/components/DocLayout'
-import DocTable from '../framework/components/ui/DocTable'
-import Callout from '../framework/components/ui/Callout'
-import CodeBlock from '../framework/components/ui/CodeBlock'
-import Badge from '../framework/components/ui/Badge'
+import { DocLayout, DocTable, Callout, CodeBlock, Badge } from '../framework'
 
 export default function HomePage() {
   return (
@@ -76,8 +72,7 @@ export default function HomePage() {
         Every page wraps its content in <code>DocLayout</code>. The layout handles the progress
         bar, prev/next navigation, and the right-side TOC automatically.
       </p>
-      <CodeBlock language="tsx">{`import DocLayout from '../framework/components/DocLayout'
-import Callout from '../framework/components/ui/Callout'
+      <CodeBlock language="tsx">{`import { DocLayout, Callout } from '../framework'
 
 export default function MyPage() {
   return (
@@ -93,16 +88,17 @@ export default function MyPage() {
 
       <h2>Available components</h2>
       <DocTable
-        headers={['Component', 'Import from', 'Usage']}
+        headers={['Component', 'Usage']}
         rows={[
-          ['DocLayout', 'framework/components/DocLayout', 'Wrap every page'],
-          ['Callout', 'framework/components/ui/Callout', 'note, tip, warning, danger, info, quote'],
-          ['CodeBlock', 'framework/components/ui/CodeBlock', 'Dark code block with copy'],
-          ['DocTable', 'framework/components/ui/DocTable', 'Styled data table'],
-          ['Badge', 'framework/components/ui/Badge', 'Language / status badges'],
-          ['Diagram', 'framework/components/ui/Diagram', 'Mermaid flowcharts'],
+          ['DocLayout', 'Wrap every page'],
+          ['Callout', 'note, tip, warning, danger, info, quote'],
+          ['CodeBlock', 'Dark code block with syntax highlighting + copy'],
+          ['DocTable', 'Styled data table'],
+          ['Badge', 'Language / status badges'],
+          ['Diagram', 'Mermaid flowcharts and sequence diagrams'],
         ]}
       />
+      <CodeBlock language="tsx">{`import { DocLayout, Callout, CodeBlock, DocTable, Badge, Diagram } from '../framework'`}</CodeBlock>
 
       <p>
         See the <Link to="/docs/showcase">Component Showcase</Link> for live examples

@@ -1,8 +1,4 @@
-import DocLayout from '../../framework/components/DocLayout'
-import Callout from '../../framework/components/ui/Callout'
-import CodeBlock from '../../framework/components/ui/CodeBlock'
-import Badge from '../../framework/components/ui/Badge'
-import DocTable from '../../framework/components/ui/DocTable'
+import { DocLayout, Callout, CodeBlock, Badge, DocTable } from '../../framework'
 
 export default function AiPrompts() {
   return (
@@ -35,19 +31,21 @@ documentation site framework.
 
 FRAMEWORK RULES:
 - All pages live in src/pages/ and are .tsx files
-- Every page wraps content in <DocLayout> from '../../framework/components/DocLayout'
+- Import ALL components from the barrel: import { DocLayout, Callout, CodeBlock } from '../../framework'
+  (use '../framework' if the page is directly in src/pages/, not src/pages/docs/)
+- Every page wraps content in <DocLayout>
 - Use h1 for the page title, h2 for sections, h3 for subsections
 - h2 and h3 headings auto-populate the right-side table of contents
 - Never use inline styles — all styling is via CSS classes
 - No external UI libraries allowed
 
-AVAILABLE COMPONENTS (import from '../../framework/components/ui/...'):
+AVAILABLE COMPONENTS (all imported from '../../framework'):
 - Callout        type: "note" | "tip" | "warning" | "danger" | "info" | "quote"
                  props: type, title (optional), children
 - CodeBlock      props: language (ts/tsx/js/python/bash/json/yaml/css/html), children (string)
 - DocTable       props: headers: string[], rows: string[][]
 - Badge          props: type: "note"|"tip"|"warning"|"danger"|"active"|"ts"|"js", label: string
-- Diagram        props: chart (Mermaid diagram string — flowchart TD or LR, sequenceDiagram, etc.)
+- Diagram        children: Mermaid diagram string — use as <Diagram>{\`flowchart TD...\`}</Diagram>
 
 FILE STRUCTURE:
 src/
@@ -107,7 +105,7 @@ Group related nodes into subgraphs if there are more than 6 nodes.
 Return only the raw Mermaid syntax (no JSX, no markdown fences) so I can
 paste it directly into:
 
-<Diagram chart={\`[paste here]\`} />`}</CodeBlock>
+<Diagram>{\`[paste here]\`}</Diagram>`}</CodeBlock>
 
       <h2>Improve an existing page</h2>
       <p>
@@ -180,12 +178,12 @@ Keep each page focused on one topic. Use h2 headings generously.`}</CodeBlock>
 </div>
 
 // Diagram
-<Diagram chart={\`
+<Diagram>{\`
 flowchart TD
   A[Start] --> B{Decision}
   B -- Yes --> C[Action]
   B -- No  --> D[End]
-\`} />`}</CodeBlock>
+\`}</Diagram>`}</CodeBlock>
 
       <DocTable
         headers={['Callout type', 'When to use']}

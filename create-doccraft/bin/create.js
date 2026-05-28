@@ -25,6 +25,13 @@ function run(cmd, cwd) {
   execSync(cmd, { cwd, stdio: 'inherit', env: { ...process.env, FORCE_COLOR: '1' } })
 }
 
+// ── Node version check ─────────────────────────────────────────────────────
+
+const [major, minor] = process.versions.node.split('.').map(Number)
+if (major < 20 || (major === 20 && minor < 19)) {
+  fatal(`Node.js 20.19 or higher is required (you have v${process.versions.node}).\nDownload the latest LTS from https://nodejs.org`)
+}
+
 // ── Resolve project name ───────────────────────────────────────────────────
 
 const arg = process.argv[2]

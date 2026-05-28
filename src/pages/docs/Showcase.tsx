@@ -1,9 +1,4 @@
-import DocLayout from '../../framework/components/DocLayout'
-import Callout from '../../framework/components/ui/Callout'
-import CodeBlock from '../../framework/components/ui/CodeBlock'
-import Badge from '../../framework/components/ui/Badge'
-import DocTable from '../../framework/components/ui/DocTable'
-import Diagram from '../../framework/components/ui/Diagram'
+import { DocLayout, Callout, CodeBlock, Badge, DocTable, Diagram } from '../../framework'
 
 export default function Showcase() {
   return (
@@ -79,14 +74,14 @@ console.log(greet('world'))  // Hello, world!`}</CodeBlock>
 
       <h2>Diagram</h2>
       <p>Mermaid flowcharts rendered inline.</p>
-      <Diagram chart={`flowchart LR
+      <Diagram>{`flowchart LR
   A[User] --> B[Your App]
   B --> C[doccraft]
-  C --> D[Great Docs]`} />
+  C --> D[Great Docs]`}</Diagram>
 
-      <CodeBlock language="tsx">{`<Diagram chart={\`flowchart LR
+      <CodeBlock language="tsx">{`<Diagram>{\`flowchart LR
   A[Input] --> B[Process] --> C[Output]
-\`} />`}</CodeBlock>
+\`}</Diagram>`}</CodeBlock>
 
       <h2>Typography</h2>
       <h3>Heading 3</h3>

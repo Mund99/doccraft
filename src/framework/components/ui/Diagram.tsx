@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-interface Props { chart: string }
+interface Props { children: string }
 
 let _id = 0
 let initialized = false
@@ -34,7 +34,7 @@ async function getMermaid() {
   return m
 }
 
-export default function Diagram({ chart }: Props) {
+export default function Diagram({ children }: Props) {
   const ref = useRef<HTMLDivElement>(null)
   const id = useRef(`mmd-${++_id}`)
   const [err, setErr] = useState<string | null>(null)
@@ -51,7 +51,7 @@ export default function Diagram({ chart }: Props) {
         document.getElementById(id.current)?.remove()
         if (ref.current) ref.current.innerHTML = ''
 
-        const { svg } = await m.render(id.current, chart.trim())
+        const { svg } = await m.render(id.current, children.trim())
 
         if (!cancelled && ref.current) ref.current.innerHTML = svg
       } catch (e) {
@@ -60,7 +60,7 @@ export default function Diagram({ chart }: Props) {
     })()
 
     return () => { cancelled = true }
-  }, [chart])
+  }, [children])
 
   if (err) return (
     <div className="diagram-wrap" style={{ textAlign: 'left' }}>

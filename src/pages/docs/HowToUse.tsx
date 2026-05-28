@@ -1,8 +1,4 @@
-import DocLayout from '../../framework/components/DocLayout'
-import Callout from '../../framework/components/ui/Callout'
-import CodeBlock from '../../framework/components/ui/CodeBlock'
-import DocTable from '../../framework/components/ui/DocTable'
-import Badge from '../../framework/components/ui/Badge'
+import { DocLayout, Callout, CodeBlock, DocTable, Badge } from '../../framework'
 
 export default function HowToUse() {
   return (
@@ -96,8 +92,7 @@ npm run dev`}</CodeBlock>
         and prev/next nav automatically.
       </p>
       <CodeBlock language="tsx">{`// src/pages/docs/Introduction.tsx
-import DocLayout from '../../framework/components/DocLayout'
-import Callout from '../../framework/components/ui/Callout'
+import { DocLayout, Callout } from '../../framework'
 
 export default function Introduction() {
   return (
@@ -170,7 +165,7 @@ import Introduction from './pages/docs/Introduction'
           ['CodeBlock', 'Syntax-highlighted code block with copy', 'language, children'],
           ['DocTable', 'Styled data table', 'headers[ ], rows[ ][ ]'],
           ['Badge', 'Inline status / language badge', 'type, label'],
-          ['Diagram', 'Mermaid flowchart or sequence diagram', 'chart'],
+          ['Diagram', 'Mermaid flowchart or sequence diagram', 'children'],
         ]}
       />
       <p>
