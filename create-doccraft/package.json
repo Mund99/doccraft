@@ -1,6 +1,6 @@
 {
   "name": "create-doccraft",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Scaffold a new doccraft documentation site — npx create-doccraft <project-name>",
   "type": "module",
   "bin": {
