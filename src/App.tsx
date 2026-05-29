@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Routes, Route, useLocation, Link } from 'react-router-dom'
-import { Sidebar, ThemeContext } from './framework'
+import { Sidebar, Search, ThemeContext } from './framework'
 import { siteConfig } from './site.config'
 import './framework/styles/globals.css'
 
@@ -48,21 +48,15 @@ function ThemeToggle() {
 }
 
 function Header({ onMenu }: { onMenu: () => void }) {
-  const inputRef = useRef<HTMLInputElement>(null)
-  useEffect(() => {
-    const fn = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); inputRef.current?.focus() }
-    }
-    window.addEventListener('keydown', fn)
-    return () => window.removeEventListener('keydown', fn)
-  }, [])
-
   return (
     <header className="header">
       <button onClick={onMenu} className="mobile-btn" aria-label="Menu">☰</button>
 
       <Link to="/" className="header-logo">
-        <div className="header-logo-icon">{siteConfig.logo}</div>
+        {siteConfig.logoUrl
+          ? <img src={siteConfig.logoUrl} alt={siteConfig.title} className="header-logo-img" />
+          : <div className="header-logo-icon">{siteConfig.logo}</div>
+        }
         <span className="header-title">{siteConfig.title}</span>
       </Link>
 
@@ -70,13 +64,7 @@ function Header({ onMenu }: { onMenu: () => void }) {
 
       <div className="header-spacer" />
 
-      <div className="header-search">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-        <input ref={inputRef} type="text" placeholder="Search docs…" />
-        <span className="kbd">⌘K</span>
-      </div>
+      <Search />
 
       {siteConfig.github && (
         <a href={siteConfig.github} target="_blank" rel="noopener noreferrer" className="header-github">
@@ -102,6 +90,21 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', theme)
     localStorage.setItem('theme', theme)
   }, [theme])
+
+  // Sync browser tab title from site.config.ts
+  useEffect(() => {
+    document.title = siteConfig.title
+  }, [])
+
+  // Apply brand accent colour from site.config.ts
+  useEffect(() => {
+    if (siteConfig.accentColor) {
+      document.documentElement.style.setProperty('--accent', siteConfig.accentColor)
+      document.documentElement.style.setProperty('--accent-light', siteConfig.accentColor)
+      // Logo bg is set once here — not inside [data-theme="dark"] so it never changes with theme
+      document.documentElement.style.setProperty('--logo-bg', siteConfig.accentColor)
+    }
+  }, [])
 
   useEffect(() => {
     const onResize = () => { if (window.innerWidth < 768) setSidebarOpen(false) }

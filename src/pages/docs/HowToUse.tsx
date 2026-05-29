@@ -5,7 +5,7 @@ export default function HowToUse() {
     <DocLayout>
       <h1>How to Use doccraft</h1>
       <div className="page-meta">
-        <Badge type="tip" label="5 min setup" />
+        <Badge type="active" label="5 min setup" />
       </div>
 
       <p>
@@ -39,7 +39,7 @@ npm install
 npm run dev`}</CodeBlock>
 
       <Callout type="tip" title="Dev server">
-        The dev server starts at <code>http://localhost:5173</code> with hot reload.
+        The dev server starts at <code>http://localhost:5175</code> with hot reload.
         Every change you make to a page is reflected instantly.
       </Callout>
 
@@ -49,10 +49,13 @@ npm run dev`}</CodeBlock>
         <code>src/site.config.ts</code> and fill in your values:
       </p>
       <CodeBlock language="typescript">{`export const siteConfig = {
-  title: 'My Project Docs',   // shown in the header
-  logo: '🚀',                 // emoji or a short text logo
-  github: 'https://github.com/you/your-project',  // optional
-  version: 'v1.0.0',          // optional — shows as a badge
+  title: 'My Project Docs',   // shown in header + browser tab
+  logo: '🚀',                 // emoji in the logo box
+  logoUrl: '/logo.png',       // optional: image replaces emoji box
+  github: 'https://github.com/you/your-project',  // optional GitHub button
+  version: 'v1.0.0',          // optional version badge
+  accentColor: '#7c3aed',     // optional brand colour (overrides default blue)
+  editUrl: 'https://github.com/you/repo/edit/main/src', // optional edit link
 }`}</CodeBlock>
 
       <h2>Step 3 — Define your navigation</h2>
@@ -160,12 +163,14 @@ import Introduction from './pages/docs/Introduction'
       <DocTable
         headers={['Component', 'What it does', 'Key props']}
         rows={[
-          ['DocLayout', 'Page wrapper — use on every page', '—'],
+          ['DocLayout', 'Page wrapper — breadcrumbs, TOC, prev/next', 'editPath'],
           ['Callout', 'Highlighted notice block', 'type, title'],
-          ['CodeBlock', 'Syntax-highlighted code block with copy', 'language, children'],
+          ['CodeBlock', 'Syntax-highlighted code with copy button', 'language, filename'],
+          ['Tabs / Tab', 'Tabbed content panels', 'label'],
           ['DocTable', 'Styled data table', 'headers[ ], rows[ ][ ]'],
           ['Badge', 'Inline status / language badge', 'type, label'],
           ['Diagram', 'Mermaid flowchart or sequence diagram', 'children'],
+          ['Search', 'Live search — built into header automatically', '⌘K / Ctrl+K'],
         ]}
       />
       <p>

@@ -1,4 +1,4 @@
-import { DocLayout, Callout, CodeBlock, Badge, DocTable, Diagram } from '../../framework'
+import { DocLayout, Callout, CodeBlock, Badge, DocTable, Diagram, Tabs, Tab } from '../../framework'
 
 export default function Showcase() {
   return (
@@ -28,16 +28,39 @@ export default function Showcase() {
 </Callout>`}</CodeBlock>
 
       <h2>Code Block</h2>
-      <p>Dark code block with a filename label and one-click copy.</p>
-      <CodeBlock language="typescript">{`function greet(name: string): string {
+      <p>Dark code block with syntax highlighting and one-click copy. Optional <code>filename</code> prop labels the file.</p>
+      <CodeBlock language="typescript" filename="src/greet.ts">{`function greet(name: string): string {
   return \`Hello, \${name}!\`
 }
 
 console.log(greet('world'))  // Hello, world!`}</CodeBlock>
 
-      <CodeBlock language="tsx">{`<CodeBlock language="typescript">
+      <CodeBlock language="tsx">{`<CodeBlock language="typescript" filename="src/greet.ts">
   {yourCodeString}
 </CodeBlock>`}</CodeBlock>
+
+      <h2>Tabs</h2>
+      <p>Tabbed content panels — great for package manager commands, OS-specific instructions, or code in multiple languages.</p>
+      <Tabs>
+        <Tab label="npm">
+          <CodeBlock language="bash">npm install doccraft</CodeBlock>
+        </Tab>
+        <Tab label="yarn">
+          <CodeBlock language="bash">yarn add doccraft</CodeBlock>
+        </Tab>
+        <Tab label="pnpm">
+          <CodeBlock language="bash">pnpm add doccraft</CodeBlock>
+        </Tab>
+      </Tabs>
+
+      <CodeBlock language="tsx">{`<Tabs>
+  <Tab label="npm">
+    <CodeBlock language="bash">npm install my-pkg</CodeBlock>
+  </Tab>
+  <Tab label="yarn">
+    <CodeBlock language="bash">yarn add my-pkg</CodeBlock>
+  </Tab>
+</Tabs>`}</CodeBlock>
 
       <h2>Badge</h2>
       <p>Inline status and language badges.</p>

@@ -26,10 +26,12 @@ hljs.registerLanguage('css', css)
 
 interface Props {
   language?: string
+  /** Optional filename shown in the code block header (e.g. "src/app.tsx") */
+  filename?: string
   children: string
 }
 
-export default function CodeBlock({ language = '', children }: Props) {
+export default function CodeBlock({ language = '', filename, children }: Props) {
   const [copied, setCopied] = useState(false)
   const codeRef = useRef<HTMLElement>(null)
 
@@ -51,15 +53,20 @@ export default function CodeBlock({ language = '', children }: Props) {
   return (
     <div className="code-block">
       <div className="code-header">
-        <div className="code-dots">
-          <span className="code-dot" />
-          <span className="code-dot" />
-          <span className="code-dot" />
+        <div className="code-header-left">
+          <div className="code-dots">
+            <span className="code-dot" />
+            <span className="code-dot" />
+            <span className="code-dot" />
+          </div>
+          {filename && <span className="code-filename">{filename}</span>}
         </div>
-        {language && <span className="code-lang">{language}</span>}
-        <button className={`code-copy ${copied ? 'ok' : ''}`} onClick={copy}>
-          {copied ? '✓ copied' : 'copy'}
-        </button>
+        <div className="code-header-right">
+          {language && <span className="code-lang">{language}</span>}
+          <button className={`code-copy ${copied ? 'ok' : ''}`} onClick={copy}>
+            {copied ? '✓ copied' : 'copy'}
+          </button>
+        </div>
       </div>
       <div className="code-body">
         <pre><code ref={codeRef} className={language ? `language-${language}` : ''} /></pre>

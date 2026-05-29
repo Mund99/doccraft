@@ -1,0 +1,213 @@
+# doccraft
+
+> A React + Vite + TypeScript documentation site framework. Clone the template, configure three files, and ship a fully-featured docs site for any project.
+
+## Quick start
+
+```bash
+npx create-doccraft my-project-docs
+cd my-project-docs
+npm run dev
+```
+
+## Three files to configure
+
+- `src/site.config.ts` — site title, logo, GitHub URL, version badge, accent colour, edit URL
+- `src/nav.ts` — sidebar navigation structure (NavItem[] array)
+- `src/App.tsx` — import pages and register React Router routes
+
+### site.config.ts fields
+
+```typescript
+export const siteConfig = {
+  title: 'My Project Docs',   // header + browser tab
+  logo: '🚀',                 // emoji shown in logo box
+  logoUrl: '',                // optional image URL — replaces emoji box (place file in public/)
+  github: '',                 // optional — shows GitHub button in header
+  version: '',                // optional — shows version badge in header
+  accentColor: '',            // optional hex — overrides default blue accent everywhere
+  editUrl: '',                // optional — base URL for "Edit this page" links
+                              // e.g. 'https://github.com/user/repo/edit/main/src'
+                              // then use: <DocLayout editPath="pages/docs/MyPage.tsx">
+}
+```
+
+Everything inside `src/framework/` is the engine — do not modify it.
+
+## Writing a page
+
+```tsx
+import { DocLayout, Callout, CodeBlock } from '../framework'
+
+export default function MyPage() {
+  return (
+    <DocLayout>
+      <h1>Page Title</h1>
+      <p>Body text here.</p>
+      <Callout type="tip" title="Tip">Use h2 and h3 headings — they appear in the right TOC.</Callout>
+    </DocLayout>
+  )
+}
+```
+
+After writing the page:
+1. Add it to `src/nav.ts` under the appropriate section
+2. Import and register a `<Route>` in `src/App.tsx`
+
+## Available components
+
+All imported from `'../framework'` (or `'../../framework'` for pages in subdirectories).
+
+### DocLayout
+Wraps every page. Provides progress bar, right-side TOC, and prev/next navigation.
+```tsx
+<DocLayout>
+  {/* page content */}
+</DocLayout>
+```
+
+### Callout
+Highlighted notice block.
+- Props: `type` ("note" | "tip" | "warning" | "danger" | "info" | "quote"), `title` (optional string)
+```tsx
+<Callout type="warning" title="Watch out">Content here.</Callout>
+```
+
+### CodeBlock
+Syntax-highlighted code block with one-click copy. Uses highlight.js.
+- Props: `language` (ts | tsx | js | jsx | python | bash | json | yaml | css | html), `children` (string)
+```tsx
+<CodeBlock language="typescript">
+  {`const x: number = 42`}
+</CodeBlock>
+```
+
+### DocTable
+Styled data table.
+- Props: `headers` (string[]), `rows` (string[][])
+```tsx
+<DocTable
+  headers={['Name', 'Type', 'Description']}
+  rows={[['title', 'string', 'The page title']]}
+/>
+```
+
+### Badge
+Inline status or language badge.
+- Props: `type` ("note" | "tip" | "warning" | "danger" | "active" | "archived" | "ts" | "js" | "python" | "electron"), `label` (optional string override)
+```tsx
+<Badge type="active" label="stable" />
+```
+
+### Diagram
+Mermaid diagram rendered inline.
+- Props: `children` (Mermaid chart string)
+```tsx
+<Diagram>{`
+flowchart TD
+  A[Start] --> B{Decision}
+  B -- Yes --> C[Done]
+`}</Diagram>
+```
+
+### Tabs / Tab
+Tabbed content panels with accessible role attributes.
+```tsx
+import { Tabs, Tab } from '../framework'
+
+<Tabs>
+  <Tab label="npm">
+    <CodeBlock language="bash">npm install my-pkg</CodeBlock>
+  </Tab>
+  <Tab label="yarn">
+    <CodeBlock language="bash">yarn add my-pkg</CodeBlock>
+  </Tab>
+</Tabs>
+```
+
+### CodeBlock (filename prop)
+Optional `filename` prop shows the file name in the header:
+```tsx
+<CodeBlock language="typescript" filename="src/site.config.ts">
+  {`export const siteConfig = { title: 'My Docs' }`}
+</CodeBlock>
+```
+
+### Search
+Live search across all pages defined in nav.ts. Triggered by ⌘K / Ctrl+K.
+Built into the header automatically — no configuration needed.
+
+## Navigation structure (nav.ts)
+
+```typescript
+export const NAV: NavItem[] = [
+  { label: 'Home', path: '/' },
+  {
+    label: 'Getting Started',
+    children: [
+      { label: 'Introduction', path: '/docs/introduction' },
+      { label: 'Installation',  path: '/docs/installation' },
+    ],
+  },
+]
+```
+
+## Features
+
+- Light (warm white) and dark (earthy neutral) theme with localStorage persistence
+- Collapsible sidebar with toggle button — state persisted in localStorage
+- Breadcrumbs above page content derived from nav.ts structure
+- "Edit this page" link — set `editUrl` in site.config.ts, pass `editPath` to DocLayout
+- Right-side on-page TOC tracking h2 and h3 headings
+- Reading progress bar
+- Prev / Next page navigation based on nav.ts order
+- Live search with keyboard navigation (⌘K, arrows, Enter, Escape)
+- Mermaid diagrams (flowchart, sequence, state, etc.)
+- Syntax-highlighted code blocks (highlight.js, github-dark theme) with optional filename tab
+- Tabbed content panels (`<Tabs>` / `<Tab label="...">`)
+- Back to top button
+
+## Project structure
+
+```
+src/
+  framework/          ← doccraft engine (do not edit)
+    components/
+      DocLayout.tsx
+      Sidebar.tsx
+      Search.tsx
+      TableOfContents.tsx
+      ui/
+        Badge.tsx
+        Callout.tsx
+        CodeBlock.tsx
+        Diagram.tsx
+        DocTable.tsx
+    styles/globals.css
+    index.ts          ← barrel export
+    ThemeContext.tsx
+  site.config.ts      ← configure: title, logo, github, version
+  nav.ts              ← configure: sidebar navigation
+  App.tsx             ← configure: route registration
+  pages/              ← your content pages
+  main.tsx
+```
+
+## Deploying
+
+```bash
+npm run build   # outputs dist/
+```
+
+Deploy `dist/` to any static host: Vercel, Netlify, GitHub Pages, Cloudflare Pages.
+
+For GitHub Pages with a custom subdirectory, set `base` in `vite.config.ts`:
+```ts
+base: '/your-repo-name/'
+```
+
+## Links
+
+- GitHub: https://github.com/Mund99/doccraft
+- npm: https://www.npmjs.com/package/create-doccraft
+- Live demo: https://mund99.github.io/doccraft/

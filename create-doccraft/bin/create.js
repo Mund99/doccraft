@@ -101,6 +101,47 @@ if (existsSync(distDir)) {
   rmSync(distDir, { recursive: true, force: true })
 }
 
+// ── Reset site.config.ts to blank placeholders ────────────────────────────
+// The template has real values (title, github, etc.) for the live demo site.
+// New projects should start with empty/placeholder values.
+
+const siteConfigPath = join(targetDir, 'src', 'site.config.ts')
+if (existsSync(siteConfigPath)) {
+  let sc = readFileSync(siteConfigPath, 'utf8')
+  // Reset title and logo to generic placeholders
+  sc = sc.replace(/title:\s*'[^']*'/, "title: 'My Project Docs'")
+  sc = sc.replace(/logo:\s*'[^']*'/, "logo: '📦'")
+  // Clear the github link — user sets their own
+  sc = sc.replace(/github:\s*'[^']*'/, "github: ''")
+  writeFileSync(siteConfigPath, sc)
+}
+success('Configured site.config.ts')
+
+// ── Strip doccraft-specific GitHub Pages config ────────────────────────────
+// The template is deployed at /doccraft/ but new projects start fresh.
+
+// 1. Remove base: '/doccraft/' from vite.config.ts
+const vcPath = join(targetDir, 'vite.config.ts')
+if (existsSync(vcPath)) {
+  const vc = readFileSync(vcPath, 'utf8')
+  writeFileSync(vcPath, vc.replace(/\s*base:\s*['"][^'"]*['"],?\n?/g, '\n'))
+}
+
+// 2. Remove public/404.html (GitHub Pages SPA redirect for /doccraft/)
+const p404 = join(targetDir, 'public', '404.html')
+if (existsSync(p404)) rmSync(p404)
+
+// 3. Remove the 404 recovery script block from index.html + update <title>
+const htmlPath = join(targetDir, 'index.html')
+if (existsSync(htmlPath)) {
+  let html = readFileSync(htmlPath, 'utf8')
+  html = html.replace(/\s*<script>\s*\/\/ Restore path encoded[\s\S]*?<\/script>/m, '')
+  html = html.replace(/<title>[^<]*<\/title>/, `<title>${projectName}</title>`)
+  writeFileSync(htmlPath, html)
+}
+
+success('Configured for fresh deployment')
+
 // ── Patch package.json ─────────────────────────────────────────────────────
 
 const pkgPath = join(targetDir, 'package.json')
@@ -119,6 +160,37 @@ delete pkg.keywords
 
 writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
 success('Configured package.json')
+
+// ── Update README.md title ─────────────────────────────────────────────────
+
+const readmePath = join(targetDir, 'README.md')
+if (existsSync(readmePath)) {
+  const readme = readFileSync(readmePath, 'utf8')
+  writeFileSync(readmePath, readme.replace(/^# \S+/m, `# ${projectName}`))
+}
+
+// ── Remove doccraft-specific files not needed in user projects ─────────────
+
+// CONTRIBUTING.md is the doccraft contributor guide — not relevant to user projects
+const contribPath = join(targetDir, 'CONTRIBUTING.md')
+if (existsSync(contribPath)) rmSync(contribPath)
+
+// Replace llms.txt with a blank template for the user's project
+const llmsPath = join(targetDir, 'public', 'llms.txt')
+if (existsSync(llmsPath)) {
+  writeFileSync(llmsPath,
+`# ${projectName}
+
+> Describe your project here for AI discoverability.
+
+## Links
+
+- GitHub:
+- Docs:
+`)
+}
+
+success('Cleaned up template files')
 
 // ── Initialise a fresh git repo ────────────────────────────────────────────
 
