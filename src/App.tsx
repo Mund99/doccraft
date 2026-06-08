@@ -47,10 +47,29 @@ function ThemeToggle() {
   )
 }
 
-function Header({ onMenu }: { onMenu: () => void }) {
+const SidebarIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="4" width="18" height="16" rx="2" />
+    <line x1="9" y1="4" x2="9" y2="20" />
+  </svg>
+)
+
+function Header({ onMenu, onToggleSidebar, collapsed }: {
+  onMenu: () => void
+  onToggleSidebar: () => void
+  collapsed: boolean
+}) {
   return (
     <header className="header">
-      <button onClick={onMenu} className="mobile-btn" aria-label="Menu">☰</button>
+      <button onClick={onMenu} className="mobile-btn" aria-label="Menu"><SidebarIcon /></button>
+      <button
+        onClick={onToggleSidebar}
+        className="sidebar-collapse-btn"
+        aria-label={collapsed ? 'Show sidebar' : 'Hide sidebar'}
+        title={collapsed ? 'Show sidebar' : 'Hide sidebar'}
+      >
+        <SidebarIcon />
+      </button>
 
       <Link to="/" className="header-logo">
         {siteConfig.logoUrl
@@ -82,6 +101,9 @@ function Header({ onMenu }: { onMenu: () => void }) {
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [collapsed, setCollapsed] = useState(
+    () => localStorage.getItem('sidebar-collapsed') === 'true'
+  )
   const [theme, setTheme] = useState<'light' | 'dark'>(() =>
     (localStorage.getItem('theme') as 'light' | 'dark') || 'light'
   )
@@ -90,6 +112,11 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', theme)
     localStorage.setItem('theme', theme)
   }, [theme])
+
+  useEffect(() => {
+    localStorage.setItem('sidebar-collapsed', String(collapsed))
+    document.documentElement.toggleAttribute('data-sidebar-collapsed', collapsed)
+  }, [collapsed])
 
   // Sync browser tab title from site.config.ts
   useEffect(() => {
@@ -115,9 +142,13 @@ export default function App() {
   return (
     <ThemeContext.Provider value={{ theme, toggle: () => setTheme(t => t === 'light' ? 'dark' : 'light') }}>
       <div className="shell">
-        <Header onMenu={() => setSidebarOpen(o => !o)} />
+        <Header
+          onMenu={() => setSidebarOpen(o => !o)}
+          onToggleSidebar={() => setCollapsed(c => !c)}
+          collapsed={collapsed}
+        />
         <div className="shell-body">
-          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+          <Sidebar isOpen={sidebarOpen} collapsed={collapsed} onClose={() => setSidebarOpen(false)} />
 
           {sidebarOpen && (
             <div
@@ -131,7 +162,7 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/docs/how-to-use" element={<HowToUse />} />
             <Route path="/docs/ai-prompts" element={<AiPrompts />} />
-            <Route path="/docs/showcase" element={<Showcase />} />
+            <Route path="/showcase" element={<Showcase />} />
             {/* <Route path="/docs/your-page" element={<YourPage />} /> */}
             <Route path="*" element={<NotFound />} />
           </Routes>

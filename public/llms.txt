@@ -94,9 +94,11 @@ Styled data table.
 
 ### Badge
 Inline status or language badge.
-- Props: `type` ("note" | "tip" | "warning" | "danger" | "active" | "archived" | "ts" | "js" | "python" | "electron"), `label` (optional string override)
+- Props: `type` ("python" | "ts" | "js" | "electron" | "active" | "archived"), `label` (optional string override)
 ```tsx
 <Badge type="active" label="stable" />
+<Badge type="python" />
+<Badge type="archived" label="deprecated" />
 ```
 
 ### Diagram

@@ -31,8 +31,8 @@ documentation site framework.
 
 FRAMEWORK RULES:
 - All pages live in src/pages/ and are .tsx files
-- Import ALL components from the barrel: import { DocLayout, Callout, CodeBlock } from '../../framework'
-  (use '../framework' if the page is directly in src/pages/, not src/pages/docs/)
+- Import ALL components from the barrel: import { DocLayout, Callout, CodeBlock, DocTable, Badge, Diagram, Tabs, Tab } from '../../framework'
+  (use '../framework' for pages directly in src/pages/; use '../../framework' for pages in src/pages/docs/)
 - Every page wraps content in <DocLayout>
 - Use h1 for the page title, h2 for sections, h3 for subsections
 - h2 and h3 headings auto-populate the right-side table of contents
@@ -40,12 +40,15 @@ FRAMEWORK RULES:
 - No external UI libraries allowed
 
 AVAILABLE COMPONENTS (all imported from '../../framework'):
+- DocLayout      props: editPath (optional string) — wraps every page; handles breadcrumbs, TOC, prev/next, edit link
 - Callout        type: "note" | "tip" | "warning" | "danger" | "info" | "quote"
                  props: type, title (optional), children
-- CodeBlock      props: language (ts/tsx/js/python/bash/json/yaml/css/html), children (string)
+- CodeBlock      props: language (ts/tsx/js/python/bash/json/yaml/css/html), filename (optional), children (string)
+- Tabs / Tab     <Tabs><Tab label="npm">…</Tab><Tab label="yarn">…</Tab></Tabs>
 - DocTable       props: headers: string[], rows: string[][]
-- Badge          props: type: "note"|"tip"|"warning"|"danger"|"active"|"ts"|"js", label: string
+- Badge          props: type: "python"|"ts"|"js"|"electron"|"active"|"archived", label (optional string)
 - Diagram        children: Mermaid diagram string — use as <Diagram>{\`flowchart TD...\`}</Diagram>
+                 supports <br/> in quoted node labels for multi-line text
 
 FILE STRUCTURE:
 src/
@@ -54,6 +57,13 @@ src/
   nav.ts            ← sidebar NavItem[] array
   App.tsx           ← React Router <Route> registrations
   pages/            ← content pages go here
+
+BUILT-IN LAYOUT FEATURES (no extra components needed):
+- Breadcrumbs    auto-generated from nav.ts when page is nested under a section
+- Sidebar collapse  toggle on sidebar edge, state saved in localStorage
+- Edit this page    set editUrl in site.config.ts + pass editPath to DocLayout
+- Back to top    appears after scrolling 320px, built into DocLayout
+- Prev / Next nav   auto-generated from nav.ts order
 
 When I ask you to write a page, return only the complete .tsx file contents.
 When I ask for nav entries, return the NavItem objects to add to nav.ts.
@@ -174,14 +184,24 @@ Keep each page focused on one topic. Use h2 headings generously.`}</CodeBlock>
 // Badge  (inline, used in page-meta div)
 <div className="page-meta">
   <Badge type="active" label="stable" />
-  <Badge type="ts" label="TypeScript" />
+  <Badge type="archived" label="deprecated" />
+  <Badge type="python" />
+  <Badge type="ts" />
+  <Badge type="js" />
+  <Badge type="electron" />
 </div>
 
-// Diagram
+// Tabs
+<Tabs>
+  <Tab label="npm"><CodeBlock language="bash">npm install my-pkg</CodeBlock></Tab>
+  <Tab label="yarn"><CodeBlock language="bash">yarn add my-pkg</CodeBlock></Tab>
+</Tabs>
+
+// Diagram (supports <br/> in quoted labels for multi-line nodes)
 <Diagram>{\`
 flowchart TD
   A[Start] --> B{Decision}
-  B -- Yes --> C[Action]
+  B -- Yes --> C["Action<br/>with detail"]
   B -- No  --> D[End]
 \`}</Diagram>`}</CodeBlock>
 
@@ -194,6 +214,17 @@ flowchart TD
           ['danger', 'Will break things if ignored'],
           ['info', 'Neutral informational aside'],
           ['quote', 'Highlight a quote or key statement'],
+        ]}
+      />
+      <DocTable
+        headers={['Badge type', 'Default label', 'Use for']}
+        rows={[
+          ['python',   'Python',     'Python code or project'],
+          ['ts',       'TypeScript', 'TypeScript'],
+          ['js',       'JavaScript', 'JavaScript'],
+          ['electron', 'Electron',   'Desktop / Electron'],
+          ['active',   '—',          'Stable, live, current'],
+          ['archived', '—',          'Deprecated, legacy'],
         ]}
       />
 

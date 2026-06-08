@@ -174,7 +174,7 @@ import Introduction from './pages/docs/Introduction'
         ]}
       />
       <p>
-        See the <a href="/docs/showcase">Component Showcase</a> for live examples and copy-paste
+        See the <a href="/showcase">Component Showcase</a> for live examples and copy-paste
         snippets for every component.
       </p>
 
@@ -186,11 +186,45 @@ import Introduction from './pages/docs/Introduction'
       <CodeBlock language="bash">{`npm run build
 # → dist/ is ready to deploy`}</CodeBlock>
 
-      <Callout type="note" title="Base path">
+      <Callout type="note" title="Base path for GitHub Pages">
         If you deploy to a subdirectory (e.g. <code>https://you.github.io/your-repo/</code>),
         set <code>base</code> in <code>vite.config.ts</code>:{' '}
         <code>{`base: '/your-repo/'`}</code>
       </Callout>
+
+      <Callout type="warning" title="GitHub Pages needs a 404.html for SPA routing">
+        GitHub Pages serves a 404 page for any URL it doesn't recognise. Since doccraft is a
+        single-page app, direct links and page refreshes will break without a redirect shim.
+        Add <code>public/404.html</code> to your project:
+      </Callout>
+      <CodeBlock language="html" filename="public/404.html">{`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>doccraft</title>
+  <script>
+    var l = window.location
+    var base = '/your-repo'
+    var path = l.pathname.slice(base.length) || '/'
+    l.replace(
+      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+      base + '/?r=' + encodeURIComponent(path) +
+      (l.search ? '&' + l.search.slice(1) : '') + l.hash
+    )
+  </script>
+</head>
+<body></body>
+</html>`}</CodeBlock>
+      <p>
+        Then add the matching recovery script inside the <code>&lt;head&gt;</code> of{' '}
+        <code>index.html</code>:
+      </p>
+      <CodeBlock language="html" filename="index.html (add inside <head>)">{`<script>
+  (function(){
+    var r = new URLSearchParams(window.location.search).get('r')
+    if (r) window.history.replaceState(null, '', '/your-repo' + decodeURIComponent(r))
+  })()
+</script>`}</CodeBlock>
     </DocLayout>
   )
 }

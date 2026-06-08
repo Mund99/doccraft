@@ -22,7 +22,7 @@ export const NAV: NavItem[] = [
   {
     label: 'Framework',
     children: [
-      { label: 'Component Showcase', path: '/docs/showcase' },
+      { label: 'Component Showcase', path: '/showcase' },
     ],
   },
   // ── Add your sections below ──────────────────────────

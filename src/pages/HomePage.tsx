@@ -28,7 +28,7 @@ export default function HomePage() {
         headers={['Feature', 'Details']}
         rows={[
           ['Light & dark theme', 'Toggle persists via localStorage'],
-          ['Collapsible sidebar', 'Toggle button on sidebar edge — state saved in localStorage'],
+          ['Collapsible sidebar', 'Hamburger button in header — completely hides/shows sidebar, state saved in localStorage'],
           ['Live search', 'Searches all nav pages — ⌘K / Ctrl+K, keyboard navigation'],
           ['Breadcrumbs', 'Auto-generated above page content from nav structure'],
           ['On-page TOC', 'Right-side table of contents, tracks h2 and h3'],
@@ -106,7 +106,7 @@ export default function MyPage() {
       <CodeBlock language="tsx">{`import { DocLayout, Callout, CodeBlock, Tabs, Tab, DocTable, Badge, Diagram } from '../framework'`}</CodeBlock>
 
       <p>
-        See the <Link to="/docs/showcase">Component Showcase</Link> for live examples
+        See the <Link to="/showcase">Component Showcase</Link> for live examples
         and copy-paste code for every component.
       </p>
 
